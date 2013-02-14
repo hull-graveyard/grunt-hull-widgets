@@ -47,17 +47,17 @@ module.exports = function (grunt) {
 
 
   /**
-   * This tasl is supposedly the only one to be called from a Gruntfile.js
+   * This task is supposedly the only one to be called from a Gruntfile.js
    * It has many options:
    *
-   * * `src`: The root path for the widgets
-   * * `dest`: The root path for the built widgets
-   * * `namespace`: The namespace in which the templates will be registered. It will be Hull.templates.%namespace%
-   * * `before`: An array of tasks to be executed before the compilation begins. These tasks will occur between the cleaning of `dest` and the first internal task of building
+   * * `src`: The root path for the widgets. Defaults to `widgets`
+   * * `dest`: The root path for the built widgets. Defaults to `dist`
+   * * `namespace`: The namespace in which the templates will be registered. It will be Hull.templates.%namespace%i. Defaults to `_default`
+   * * `before`: An array of tasks to be executed before the compilation begins. These tasks will run after the cleaning of `dest` and before the first internal _actual_ build task
    * * `after`: An array of tasks to be executed after the building is done.
    */
   grunt.registerMultiTask('hull_widgets', 'Compile Hull.io widgets for production.', function () {
-    widgetsSrc = this.data.src;
+    widgetsSrc = this.data.src || 'widgets';
     destinationPath = this.data.dest || "dist";
     widgetNamespace = this.data.namespace || "_default";
     
