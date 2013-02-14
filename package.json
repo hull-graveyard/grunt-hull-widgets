@@ -1,6 +1,6 @@
 {
   "name": "grunt-hull-widgets",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "A grunt task to compile your Hull.io widgets",
   "main": "Gruntfile.js",
   "scripts": {
