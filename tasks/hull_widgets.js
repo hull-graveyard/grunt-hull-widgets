@@ -87,7 +87,7 @@ module.exports = function (grunt) {
     grunt.config.set('__hull_widgets_handlebars', {
       widgets: {
         options: {
-          wrapped: true,
+          wrapped: false,
           namespace: "Hull.templates." + widgetNamespace,
           processName: function (filename) {
             return filename.replace(widgetsSrc + "/", "").replace(/\.hbs$/, '');
