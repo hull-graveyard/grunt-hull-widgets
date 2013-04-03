@@ -15,7 +15,8 @@ module.exports = function (grunt) {
       destinationPath,
       uglifyWidgetsFiles,
       concatWidgetsFiles,
-      handlebarsWidgetsFiles;
+      handlebarsWidgetsFiles,
+      optimize;
 
   /**
    * Generates all the object literals that will be needed to manipulate
@@ -60,7 +61,8 @@ module.exports = function (grunt) {
     widgetsSrc = this.data.src || 'widgets';
     destinationPath = this.data.dest || "dist";
     widgetNamespace = this.data.namespace || "_default";
-    
+    optimize = this.data.hasOwnProperty('optimize') ? this.data.optimize : true;
+
     var tasks = ['__moveConfig', 'clean'];
     tasks = tasks.concat(this.data.before || []);
     tasks = tasks.concat(['handlebars', 'concat', 'uglify']);
@@ -87,7 +89,7 @@ module.exports = function (grunt) {
     grunt.config.set('__hull_widgets_handlebars', {
       widgets: {
         options: {
-          wrapped: false,
+          wrapped: true,
           namespace: "Hull.templates." + widgetNamespace,
           processName: function (filename) {
             return filename.replace(widgetsSrc + "/", "").replace(/\.hbs$/, '');
@@ -107,6 +109,12 @@ module.exports = function (grunt) {
     grunt.config.set('__hull_widgets_uglify', {
       widgets: {
         files: uglifyWidgetsFiles
+      },
+      options: {
+        mangle: optimize,
+        compress: optimize,
+        beautify: !optimize,
+        preserveComments: optimize ? false : 'all'
       }
     });
 

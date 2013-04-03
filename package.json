@@ -1,6 +1,6 @@
 {
   "name": "grunt-hull-widgets",
-  "version": "0.4.3",
+  "version": "0.4.2",
   "description": "A grunt task to compile your Hull.io widgets",
   "main": "Gruntfile.js",
   "scripts": {
@@ -12,13 +12,22 @@
     "grunt"
   ],
   "devDependencies": {
-    "grunt-contrib-clean": "~0.4.0",
-    "grunt-contrib-handlebars": "~0.5.4",
-    "grunt-contrib-concat": "~0.1.2",
-    "grunt-contrib-uglify": "~0.1.1",
-    "grunt": "~0.4.0",
-    "grunt-contrib-requirejs": "~0.4.0"
+    "grunt-contrib-clean": "~0.4",
+    "grunt-contrib-handlebars": "~0.3.3",
+    "grunt-contrib-concat": "~0.1.1",
+    "grunt-contrib-uglify": "~0.1.0"
   },
-  "author": "Xavier Cambar <xavier@hull.io>",
-  "license": "MIT"
+  "author": {
+    "name": "Xavier Cambar",
+    "email": "xavier@hull.io"
+  },
+  "license": "MIT",
+  "readme": "# Grunt-hull-widgets\n\nThis is a grunt task that allows to build [Hull.io][] widgets from a source directory.\n\nCheck the [documentation](http://hull.io/docs) to learn how to create your own [Hull.io][] widgets.\n\n## Options\n\n* `src`: The root path for the widgets. Defaults to `%PROJECT_ROOT%/widgets/`\n* `dest`: The root path for the built widgets. Defaults to `%PROJECT_ROOT%/dist/`\n* `namespace`: The namespace the templates will be registered in. It will be Hull.templates.%namespace%. Defaults to `_default`.\n* `before`: An array of tasks to be executed before the compilation begins. These tasks will run after the cleaning of `dest` and before the first internal _actual_ build tasks. Defaults to `[]`.\n* `after`: An array of tasks to be executed after the building is done. Defaults to `[]`.\n\n##License\n\nMIT\n\n[Hull.io]: http://hull.io\n\n",
+  "readmeFilename": "README.md",
+  "_id": "grunt-hull-widgets@0.4.2",
+  "dist": {
+    "shasum": "7e9e4247723714a904ea19777ccbcb05d2f9340e"
+  },
+  "_from": "grunt-hull-widgets@0.4.2",
+  "_resolved": "https://registry.npmjs.org/grunt-hull-widgets/-/grunt-hull-widgets-0.4.2.tgz"
 }
