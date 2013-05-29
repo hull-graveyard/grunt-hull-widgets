@@ -27,7 +27,11 @@ module.exports = function (grunt) {
     concatWidgetsFiles = {};
     uglifyWidgetsFiles = {};
 
-    var widgetsDirs = grunt.file.glob.sync([process.cwd(), widgetsSrc, "*"].join('/'));
+    var widgetsDirs = grunt.file.glob.sync([process.cwd(), widgetsSrc, "**/main.js"].join('/')).map(function (f) {
+      var arr = f.split('/');
+      arr.pop();
+      return arr.join('/');
+    });
     widgetsDirs.forEach(function (widgetPath) {
       widgetPath = widgetPath.replace(process.cwd() + '/', '');
       //Handlebars templates
@@ -39,7 +43,7 @@ module.exports = function (grunt) {
       var srcConcatFiles = [[tmpDir, widgetPath, "**", "*.js"].join('/'), [widgetPath, '**', '*.js'].join('/')];
       concatWidgetsFiles[destConcatPath] = srcConcatFiles;
       //Uglify
-      var destUglifyPath = [destinationPath, basename(widgetPath), 'main.js'].join('/');
+      var destUglifyPath = [destinationPath, widgetPath, 'main.js'].join('/');
       var srcUglifyFiles = [tmpDir, widgetPath, 'main.js'].join('/');
       uglifyWidgetsFiles[destUglifyPath] = srcUglifyFiles;
     });
