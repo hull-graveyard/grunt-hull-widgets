@@ -8,6 +8,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
   var widgetsSrc,
       widgetNamespace,
@@ -15,6 +16,7 @@ module.exports = function (grunt) {
       destinationPath,
       uglifyWidgetsFiles,
       concatWidgetsFiles,
+      copyWidgetsFiles,
       handlebarsWidgetsFiles,
       optimize;
 
@@ -26,6 +28,7 @@ module.exports = function (grunt) {
     handlebarsWidgetsFiles = {};
     concatWidgetsFiles = {};
     uglifyWidgetsFiles = {};
+    copyWidgetsFiles = {};
 
     var widgetsDirs = grunt.file.glob.sync([process.cwd(), widgetsSrc, "**/main.js"].join('/')).map(function (f) {
       var arr = f.split('/');
@@ -40,12 +43,22 @@ module.exports = function (grunt) {
       handlebarsWidgetsFiles[destTemplatePath] = templatesFiles;
       //concat Files
       var destConcatPath = [tmpDir, widgetPath, "main.js"].join('/');
-      var srcConcatFiles = [[tmpDir, widgetPath, "**", "*.js"].join('/'), [widgetPath, '**', '*.js'].join('/')];
+      var srcConcatFiles = [[tmpDir, widgetPath, "templates.js"].join('/'), [widgetPath, 'main.js'].join('/')];
       concatWidgetsFiles[destConcatPath] = srcConcatFiles;
       //Uglify
       var destUglifyPath = [destinationPath, widgetPath, 'main.js'].join('/');
       var srcUglifyFiles = [tmpDir, widgetPath, 'main.js'].join('/');
       uglifyWidgetsFiles[destUglifyPath] = srcUglifyFiles;
+      //Copy
+      var destCopyPath = [destinationPath, widgetPath].join('/');
+      var srcCopyFiles = [['**', '*.js'].join('/'), '!main.js'];
+      copyWidgetsFiles[widgetPath] = {
+        expand: true,
+        src: srcCopyFiles,
+        cwd: widgetPath,
+        dest: destCopyPath
+      };
+      grunt.log.warn(destCopyPath);
     });
   }
 
@@ -69,7 +82,7 @@ module.exports = function (grunt) {
 
     var tasks = ['__moveConfig', 'clean'];
     tasks = tasks.concat(this.data.before || []);
-    tasks = tasks.concat(['handlebars', 'concat', 'uglify']);
+    tasks = tasks.concat(['handlebars', 'concat', 'uglify', 'copy']);
     tasks = tasks.concat(this.data.after || []);
     tasks = tasks.concat(['__restore']);
 
@@ -121,11 +134,15 @@ module.exports = function (grunt) {
         preserveComments: optimize ? false : 'all'
       }
     });
+    grunt.config.set('__hull_widgets_copy',
+      copyWidgetsFiles
+    );
 
     grunt.renameTask('clean', '__hull_widgets_clean');
     grunt.renameTask('handlebars', '__hull_widgets_handlebars');
     grunt.renameTask('concat', '__hull_widgets_concat');
     grunt.renameTask('uglify', '__hull_widgets_uglify');
+    grunt.renameTask('copy', '__hull_widgets_copy');
   });
 
 
@@ -139,6 +156,7 @@ module.exports = function (grunt) {
     grunt.renameTask('__hull_widgets_handlebars', 'handlebars');
     grunt.renameTask('__hull_widgets_concat', 'concat');
     grunt.renameTask('__hull_widgets_uglify', 'uglify');
+    grunt.renameTask('__hull_widgets_copy', 'copy');
   });
 };
 
